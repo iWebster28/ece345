@@ -42,3 +42,22 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 * Stable sorting algorithm
 * Must have **positive** input integers in range [0, k] only
 * Time: Theta(n + k), where k is max value of input array
+
+### Radix Sort
+* Stable sorting algorithm
+* Key idea: sort from LSB (least significant bit) to MSB (most " ") (or digit)
+``` 
+    n = # of numbers in array A
+    b = b-bit numbers, if binary (ex: 32-bit)
+    r = bucket size in bits (ex: 8-bit buckets)
+    k = range of values per bucket/digit (i.e. max #)
+    where k = 2^r (r = 3 yields 8 bits/bucket)
+    d = # 'digits' for each number
+    where d = b/r = # passes/bucket or passes/digit
+
+    EX: n = 100, b = 32, r = 8, k = 2^r = 2^3 = 8
+    Theta(# buckets * time per bucket)
+    = Theta(d(n + k)) 
+    = Theta((b/r)(n + 2^r))
+    = Theta((32/8)(100 + 2^8)) = Theta(4(100 + 2^8))
+```

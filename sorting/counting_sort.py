@@ -37,7 +37,7 @@ def counting_sort(A, k=0):
     # sc.print_array(C)
 
     # 3. Place #s in appropriate position (sorts)
-    # Range: [len(A), 1]
+    # Range: [len(A), 0]
     for j in range(len(A) - 1, -1, -1): # O(n)
         # print(f"{j}")
         # print(f"C[A[j]] {C[A[j]]}")
