@@ -54,10 +54,14 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
     where k = 2^r (r = 3 yields 8 bits/bucket)
     d = # 'digits' for each number
     where d = b/r = # passes/bucket or passes/digit
-
-    EX: n = 100, b = 32, r = 8, k = 2^r = 2^3 = 8
-    Theta(# buckets * time per bucket)
-    = Theta(d(n + k)) 
-    = Theta((b/r)(n + 2^r))
-    = Theta((32/8)(100 + 2^8)) = Theta(4(100 + 2^8))
 ```
+**EX1:** n = 100, b = 32, r = 8, k = 2^r = 2^3 = 8  
+Theta(# buckets * time per bucket)  
+= Theta(d(n + k))   
+= Theta((b/r)(n + 2^r))  
+= Theta((32/8)(100 + 2^8)) = Theta(4(100 + 2^8))  
+
+**EX2:** (see arr_pos_trip in [sort_comms.py](./sorting/sort_comms.py)) n = 7, k = 10 (10 decimal numbers per 1 digit), d = 3 passes (max number in array A has 3 digits)  
+Theta(# buckets * time per bucket)  
+= Theta(d(n + k))  
+= Theta(3(7 + 10))  

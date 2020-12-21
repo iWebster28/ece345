@@ -1,4 +1,5 @@
 import sort_comms as sc
+
 def counting_sort(A, k=0):
     """
     Counting sort will stable-sort an array `A` in Theta(n + k) time.
@@ -14,9 +15,7 @@ def counting_sort(A, k=0):
     # We could manually determine k in O(n) time, or it could be pre-specified
     if (k == 0):
         # Find `k` manually
-        for i in range(0, n):
-            if A[i] > k:
-                k = A[i]
+        k = sc.get_max(A, n)
     
     print(f"k: {k}")
     C = [0 for i in range(0, k + 1)] # Initialize all entries to 0 ("We've seen no instances of any number")

@@ -6,7 +6,7 @@ def radix_sort(A, d):
     Perform radix sort on array `A`.
     n = # of numbers in array `A`
     k = range of digits (i.e. max #)
-    d = # 'digits' for each number
+    d = # 'digits' or passes for each number
     """
     # Stable sort on digit i in Array A
     for i in range(1, d + 1): 
