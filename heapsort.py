@@ -1,20 +1,5 @@
 # Heapsort Algorithm Review - Fall 2020 - Ian Webster
 
-# Heapsort Characteristics:
-# In-place sorting algorithm (Space complexity is O(n))
-
-# Heap Properties:
-# 1. Heap shape property: bottom level of tree is not complete
-# 2. Heap ordering: key(parent) > key(child)
-
-# Node Indicies in a Heap:
-# Root node begins at index 1, where 1 is the associated index in the array.
-
-# For any given node `i` in the heap/array:
-# 1. Parent(i): math.floor(i/2)
-# 2. Left Child(i): 2*i 
-# 3. Right Child(i): 2*i + 1
-
 import math
 
 class Heap:
@@ -131,4 +116,52 @@ class Heap:
         for i in range(1, self.length + 1):
             print(self.A[i], end=" ")
         print("\n")
+        return
+
+    def print_formatted(self):
+        n = self.length # number of nodes
+        h = math.floor(math.log(n, 2)) # "height" of heap
+        spacer = " "
+        print(f"h: {h}")
+        
+        # For each row in the heap:
+        for i in range(0, h + 1): # where `i` is row #; start at 0.
+            # Start and End (min and max) node indices for row `i`
+            start = 2 ** i
+            if i == h: # Last row may not be full (b/c heap shape property)
+                end = self.length
+            else:
+                end = 2 ** (i + 1) - 1
+            
+            expansion_factor = 3 # Adjust spacing of nodes
+            delta_spacing = expansion_factor * (2 ** (h - i + 1)) - 1 # Determine spacing for consecutive elements `j` on row `i`
+            init_spacing = expansion_factor * (2 ** (h - i) - 1) #delta_spacing - 1
+
+            # print(f"delta: {delta_spacing}")
+            # print(f"init: {init_spacing}")
+
+            # Experimental: add logic to adjust spacing based on digit length of A[j]
+            # Ex: Each row should consider the length (in digits) of its children
+            # Easiest: consider the length of the longest number in the entire list (extract_max)
+            # Use this number as the expansion factor, and then also subtract it from the delta on each consecutive hop?
+            # num_digits = int(math.log10(self.A[self.length])) + 1 #self.A[2 ** (i + 2) - 1])
+            # delta_spacing -= num_digits - 1
+
+            if i == 0: # Corner case: first row
+                print(spacer * init_spacing + f"{self.A[0]}", end="\n")
+                continue
+        
+            # For each node `j` in row `i`
+            for j in range(start, end + 1): # Indices of nodes in row `i` has range [2^i, 2^(i + 1) - 1]
+                # The first node in any row begins with 2^(h - i) - 1 spaces.
+                # Consecutive nodes require additional 2^(h - i + 1) - 1 spaces.
+
+                # print(f"HI|{j}|{self.A[j]}|")
+                if j == start:
+                    print(spacer * init_spacing + f"{self.A[j]}", end="")
+                else:
+                    print(spacer * delta_spacing + f"{self.A[j]}", end="")
+            
+            print("") # Newline after ever row `i` is finished printing all nodes
+        print("")
         return
