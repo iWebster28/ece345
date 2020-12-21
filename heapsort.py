@@ -109,6 +109,9 @@ class Heap:
         return
     
     def print_heap(self):
+        """
+        Prints heap in spaced format.
+        """
         if self.length < 0 or self.heap_size < 0:
             print("Error: Heap length too small.")
             return
@@ -119,6 +122,9 @@ class Heap:
         return
 
     def print_formatted(self):
+        """
+        Prints the array as a heap with appropriate spacing.
+        """
         n = self.length # number of nodes
         h = math.floor(math.log(n, 2)) # "height" of heap
         spacer = " "

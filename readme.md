@@ -22,3 +22,4 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 1. Parent(i): math.floor(i/2)  
 2. Left Child(i): 2*i   
 3. Right Child(i): 2*i + 1  
+
