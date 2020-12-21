@@ -4,12 +4,12 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 ## Projects
 
 ### Heapsort
-* Run heapsort_test.py to see it in action.
+* Run [heapsort_test.py](./sorting/heapsort_test.py) to see it in action.
 
 #### Heapsort Characteristics:
-* In-place sorting algorithm 
-* Time complexity is O(nlogn)
-* Space complexity is O(1)
+* Comparison-based, in-place sorting algorithm 
+* Time: O(nlogn)
+* Space: O(1)
 
 #### Heap Properties:
 1. Heap shape property: bottom level of tree is not complete
@@ -23,3 +23,22 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 2. Left Child(i): 2*i   
 3. Right Child(i): 2*i + 1  
 
+
+### Quicksort
+* Run [qs_test.py](./sorting/qs_test.py) to see it in action
+
+#### Quicksort Characteristics:
+* Comparison-based sorting algorithm
+* Time: Theta(nlogn) on average
+* Space: O(n)
+* Randomized partition used to prevent the ```T(n) = T(n - 1) + Theta(n) = Theta(n^2)``` worst case
+* Partitions explained further in [quicksort.py](./sorting/quicksort.py)
+
+
+### Counting Sort
+* Run [cs_test.py](./sorting/cs_test.py) to see it in action
+
+#### Counting Sort Characteristics:
+* Stable sorting algorithm
+* Must have **positive** input integers in range [0, k] only
+* Time: Theta(n + k), where k is max value of input array

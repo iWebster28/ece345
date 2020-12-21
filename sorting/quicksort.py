@@ -47,16 +47,3 @@ def swap(A, i1, i2):
     A[i1] = A[i2]
     A[i2] = temp
     return
-
-def print_array(A):
-    """
-    Prints heap in spaced format.
-    """
-    if len(A) < 0:
-        print("Error: Array length too small.")
-        return
-    print("Print Array: ", end="")
-    for i in range(0, len(A)):
-        print(A[i], end=" ")
-    print("\n")
-    return
