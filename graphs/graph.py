@@ -5,24 +5,9 @@
 # Edges stored in a list?
 
 class Graph():
-    def __init__(self, V, E):
-        self.V = []
-        self.E = [] # list of tuples?
-        self.adj = [] # Adjacency list - is this built from E?
-
+    def __init__(self, adj):
+        self.adj = adj # Adjacency list
         self.d = [] # List of shortest-path distance estimates for each vertex `v` in `V`
-
-        self.build_adj_list()
-
-    # Assume adj list is already build
-    # def build_adj_list(self):
-    #     """
-    #     Builds an adjacency list using V and E.
-    #     """
-    #     for u in V:
-    #         self.adj[u] = []
-
-    #     return
 
     def print_graph(self):
         """
@@ -30,30 +15,36 @@ class Graph():
         """
         print("Printing graph:")
 
-
-        
+        for u in range(0, len(self.adj)):
+            print(f"adj[{u}]: {self.adj[u]} \nd[{u}]: {self.d[u]}", end="\n")
         return
 
     def vertex_exist(self, s):
         """
         Answers if vertex `s` exists in `V`
         """
-        for v in self.V:
-            if v == s:
-                return True
+        if s >= len(self.adj) or s < 0:
+            print("Error: Invalid source vertex `s`")
+            return False
+
+        # If source vertex exists, and has edges to other vertices
+        if self.adj[s] != None:
+            return True
+
         return False
 
     def initialize_d(self):
         """
         Initialize distance estimates `d[u]` to +infinity for all `u`
         """
-        for u in self.V:
-            self.d[u] = float("+inf")
+        self.d = [float("+inf") for u in self.adj]
         return
 
+# Unused atm
 class Vertex():
     def __init__(self, v, w):
-        self.v = 
+        self.v = v # Vertex Key
+        self.w = w # Weight
 
 class Queue():
     def __init__(self):
@@ -72,9 +63,9 @@ class Queue():
         """
         return self.q.pop(-1)
     
-    def difference(V, s):
-        """
-        Finds the difference of 2 lists `V` and `s where 
-        # (`s` is really a single vertex assumed to be in list `V`)
-        """
-        return [v for v in V if v not in s]
+    # def difference(V, s):
+    #     """
+    #     Finds the difference of 2 lists `V` and `s where 
+    #     # (`s` is really a single vertex assumed to be in list `V`)
+    #     """
+    #     return [v for v in V if v not in s]
