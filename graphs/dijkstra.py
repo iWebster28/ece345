@@ -1,13 +1,16 @@
 import graph_comms as gc
 import graph as gr
+import sys
+sys.path.insert(1, "../sorting/")
 
 import heapsort as hs
 import sort_comms as sc
 
 def main():
     adj = gc.adj_c
-    s = 1 
-    G = gr.Graph(adj)
+    w = gc.weight_c
+    s = 3
+    G = gr.Graph(adj, w)
 
     dijkstra(G, s)
     G.print_graph()
@@ -18,27 +21,19 @@ def dijkstra(G, s):
     Dijkstra's algorithm - find shortest paths from source vertex `s` to all other nodes.
     """
     G.init_ss(s)
-    S = []
+    S = [] # Vertices whose final shortest path weight has been determined
 
     # Call heapsort on array A
-    input_array = sc.arr1
-    heap = hs.Heap(input_array)
-    heap.print_heap()
-    heap.heapsort()
-    print("Sorted List: ", end="")
-    heap.print_heap()
-    heap.print_formatted()
+    V = [v for v in range(0, len(G.adj))] # Add all vertices to queue initially
 
-    pq = [] # Priority Queue
+    pq = hs.Heap(V) # Priority Queue/Heap
+    pq.print_heap() # 1-indexed
 
-    # Q = gr.Queue() # Priority Queue using heap!
-    pq = [v for v in G.adj] # Add all vertices to queue initially
-
-    while len(pq) is not 0:
-        u = pq.extract_min() # min heap!
+    while pq.heap_size is not 0:
+        u = pq.extract_root("min") # Min-heap Extract-Min
         S.append(u)
         for v in G.adj[u]:
-            G.relax(u, v, w)
+            G.relax(u, v) # w array is contained with the Graph class
 
     return
 

@@ -6,11 +6,32 @@ class Heap:
         if (len(input_array) < 1):
             print("Invalid input array size.")
         self.A = input_array
-        self.A.append(input_array[0]) # Append 1st item to end of list (we ignore index 0)
+        
+        self.start_idx = 1
+        self.cvt_one_idx(input_array) # Convert to 1-indexed array
+        # self.A.append(input_array[0]) # O(1) - Append 1st item to end of list (we ignore index 0)
+        
         self.length = len(self.A) - 1
         self.heap_size = len(self.A) - 1 # Initially
         print('length:', self.length)
-        print('hs:', self.heap_size)
+        print('heap_size:', self.heap_size)
+    
+    def cvt_one_idx(self, input_array):
+        """
+        Convert to 1-indexed array (shift all elements right)
+        """
+        self.start_idx = 1
+        self.A.insert(1, input_array[0]) # O(n)
+        return
+    
+    def cvt_zero_idx(self):
+        """
+        Convert to 0-indexed array (shift all elements left)
+        """
+        self.start_idx = 0
+        self.A[:] = self.A[1:] # A[0] gets removed; all other elements shifted left
+        self.length -= 1
+        return
 
     # Return index corresponding to parent of node `i`
     def parent(self, i):
@@ -99,20 +120,21 @@ class Heap:
         self.print_heap()
         return
 
-    def delete_root(self, hs_type): # "similar to heap_extract_max"
+    def extract_root(self, hs_type): # "similar to heap_extract_max"
         """
-        Deletes the max OR min node in a heap.
+        Deletes/Extracts the max OR min node in a heap.
         """
         if (self.heap_size < 1):
             print("Error: heap_size too small.")
-            
+        
+        root = self.A[1]
         self.swap(1, self.heap_size)
         self.heap_size = self.heap_size - 1
         if hs_type == "max":
             self.max_heapify(1)
         else:
             self.min_heapify(1)
-        return
+        return root
 
     def heapsort(self, hs_type="max"):
         """
@@ -123,9 +145,13 @@ class Heap:
         print("---Begin Sorting---")
 
         for i in range(1, self.heap_size):
-            self.delete_root(hs_type)
+            unused = self.extract_root(hs_type)
             # print("DIAG:", end=" ")
             # self.print_heap()
+
+        # Shift back to 0-indexed array
+        # self.cvt_zero_idx() 
+
         return
     
     def print_heap(self):
@@ -136,7 +162,7 @@ class Heap:
             print("Error: Heap length too small.")
             return
         print("Print heap: ", end="")
-        for i in range(1, self.length + 1):
+        for i in range(self.start_idx, self.length + 1):
             print(self.A[i], end=" ")
         print("\n")
         return
@@ -144,6 +170,7 @@ class Heap:
     def print_formatted(self):
         """
         Prints the array as a heap with appropriate spacing.
+        Note: works for 1-indexed array.
         """
         n = self.length # number of nodes
         h = math.floor(math.log(n, 2)) # "height" of heap

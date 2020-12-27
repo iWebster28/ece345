@@ -43,7 +43,7 @@ class Graph():
         self.p = [-1 for u in self.adj] # All predecessors set to 1 intially (unused for BFS or DFS)
         return
     
-    def relax(self, u, v, w):
+    def relax(self, u, v):
         """
         "Relaxes" the distance estimate for edge (u, v)
         if the old weight `w` is greater than the calculated
@@ -51,13 +51,15 @@ class Graph():
         """
         # We know u, but we need to traverse the list to get `v`
         # Since vertex `v` is not neccessarily at position G.adj[u][v] in the adj. list of vertex `u`
-        for _v in G.adj[u]:
-            if G.adj[u][_v] == v: # Found location
-                v = _v # set index to be used for self.w[u][v]
+        # print(self.adj[u])
+        for _v in range(0, len(self.adj[u])):
+            # print(_v)
+            if self.adj[u][_v] == v: # Found location
+                v_idx_in_w = _v # set index to be used for self.w[u][v]
         
-        # If the old cost is worse than the new cost estimate
-        if self.d[v] > self.d[u] + self.w[u][v]:
-            self.d[v] = self.d[u] + self.w[u][v]
+        # If the old cost is worse than the new cost
+        if self.d[v] > self.d[u] + self.w[u][v_idx_in_w]:
+            self.d[v] = self.d[u] + self.w[u][v_idx_in_w]
             self.p[v] = u # Set a new best-predecessor
         return
 
