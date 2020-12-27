@@ -7,7 +7,7 @@ def main():
     input_array = sc.arr1
     heap = hs.Heap(input_array)
     heap.print_heap()
-    heap.heapsort()
+    heap.heapsort("max")
     print("Sorted List: ", end="")
     heap.print_heap()
     heap.print_formatted()

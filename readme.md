@@ -13,7 +13,9 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 
 #### Heap Properties:
 1. Heap shape property: bottom level of tree is not complete
-2. Heap ordering: key(parent) > key(child)
+2. Heap ordering
+* Max-Heap Property: key(parent) >= key(child)
+* Min-Heap Property: key(parent) <= key(child)
 
 #### Node Indicies in a Heap:
 * Root node begins at index 1, where 1 is the associated index in the array.

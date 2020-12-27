@@ -1,5 +1,4 @@
 # Heapsort Algorithm Review - Fall 2020 - Ian Webster
-
 import math
 
 class Heap:
@@ -14,15 +13,15 @@ class Heap:
         print('hs:', self.heap_size)
 
     # Return index corresponding to parent of node `i`
-    def parent(i):
+    def parent(self, i):
         return math.floor(i/2) 
 
     # Return index corresponding to right of node `i`
-    def left(i): 
+    def left(self, i): 
         return 2*i
 
     # Return index corresponding to left of node `i`
-    def right(i):
+    def right(self, i):
         return 2*i + 1
 
     def swap(self, i1, i2):
@@ -41,69 +40,90 @@ class Heap:
         Maintains the 'Heap Shape' property.
         Time: O(logn)
         """    
-
         # print("max_heapify:", i, end="\n")
+        if (2*i + 1 <= self.heap_size): # i.e. 2 children
+            if (self.A[2*i] > self.A[i]) and (self.A[2*i] >= self.A[2*i + 1]): 
+                # Since 2*i is largest, swap left (2*i) with i 
+                self.swap(2*i, i)
+                self.max_heapify(2*i)
+                
+            elif (self.A[2*i + 1] > self.A[i]) and (self.A[2*i + 1] > self.A[2*i]): 
+                # Since 2*i + 1 is largest, swap right (2*i + 1) with i
+                self.swap(2*i + 1, i)
+                self.max_heapify(2*i + 1)
 
-        try:
-            if (2*i + 1 <= self.heap_size): # i.e. 2 children
-                if (self.A[2*i] > self.A[i]) and (self.A[2*i] >= self.A[2*i + 1]): 
-                    # Since 2*i is largest, swap left (2*i) with i 
-                    self.swap(2*i, i)
-                    self.max_heapify(2*i)
-                    
-                elif (self.A[2*i + 1] > self.A[i]) and (self.A[2*i + 1] > self.A[2*i]): 
-                    # Since 2*i + 1 is largest, swap right (2*i + 1) with i
-                    self.swap(2*i + 1, i)
-                    self.max_heapify(2*i + 1)
-
-            elif (2*i <= self.heap_size): # 1 child
-                if (self.A[2*i] > self.A[i]):
-                    self.swap(2*i, i)
-                    self.max_heapify(2*i)
-        except:
-            print("Error: i=", i)
-
+        elif (2*i <= self.heap_size): # 1 child
+            if (self.A[2*i] > self.A[i]):
+                self.swap(2*i, i)
+                self.max_heapify(2*i)
         return
 
-    def build_max_heap(self):
+    def min_heapify(self, i):
+        """
+        min_heapify compares a node `i` with its children, and swaps the smaller child with `i`.
+        Maintains the 'Heap Shape' property.
+        Time: O(logn)
+
+        This version of heapify is from CLRS.
+        """ 
+        l = self.left(i)
+        r = self.right(i)
+        if l <= self.heap_size and self.A[l] < self.A[i]:
+            smallest = l
+        else:
+            smallest = i
+        if r <= self.heap_size and self.A[r] < self.A[smallest]: # If `l` == `r`, then `r` is swapped with `i`
+            smallest = r
+        if smallest is not i:
+            self.swap(i, smallest)
+            self.min_heapify(smallest)
+        return
+
+    def build_heap(self, hs_type):
         """
         Builds a max heap, given array A.
         Starts from middle of array and 'heapifies' iteratively.
         Time: O(nlogn) (n calls to heapify)
         """
-        print("---Building Max Heap---")
+        print(f"---Building {hs_type} heap---")
 
         i = math.floor(len(self.A)/2) # Middle of the array; index `i` 
         while i != 0:
-            self.max_heapify(i)
+            if hs_type == "max":
+                self.max_heapify(i)
+            else:
+                self.min_heapify(i)
             i = i - 1
         
         print("Heap built.")
         self.print_heap()
         return
 
-    def delete_max(self): # "similar to heap_extract_max"
+    def delete_root(self, hs_type): # "similar to heap_extract_max"
         """
-        Deletes the max node in a heap.
+        Deletes the max OR min node in a heap.
         """
         if (self.heap_size < 1):
             print("Error: heap_size too small.")
             
         self.swap(1, self.heap_size)
         self.heap_size = self.heap_size - 1
-        self.max_heapify(1)
+        if hs_type == "max":
+            self.max_heapify(1)
+        else:
+            self.min_heapify(1)
         return
 
-    def heapsort(self):
+    def heapsort(self, hs_type="max"):
         """
         Sorts array A in O(nlogn) time.
         """
-        self.build_max_heap()
+        self.build_heap(hs_type)
 
         print("---Begin Sorting---")
 
         for i in range(1, self.heap_size):
-            self.delete_max()
+            self.delete_root(hs_type)
             # print("DIAG:", end=" ")
             # self.print_heap()
         return

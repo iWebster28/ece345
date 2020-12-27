@@ -4,7 +4,7 @@ import math
 
 def main():
     # Build graph
-    adj = gc.adj_a
+    adj = gc.adj_a # Adjacency list 
     s = 1 # Source vertex
     G = gr.Graph(adj)
 
@@ -20,14 +20,13 @@ def bfs(G, s):
     if not G.vertex_exist(s):
         return    
 
-    # Initialize distance estimates `ds`
-    G.initialize_d()
-    G.d[s] = 0 # Source dist is initially 0
+    # Initialize distance estimates `d`
+    G.init_ss(s)
+   
     Q = gr.Queue() # Create a queue
     Q.enqueue(s) # Add source vertex to the queue
 
-    while len(Q.q) != 0: # While queue not empty
-        G.print_graph() # Diag
+    while len(Q.q) is not 0: # While queue not empty
         u = Q.dequeue()
         # Visit all neighbours of vertex `v` (if unvisited),
         # Add 1 to distance estimate,

@@ -2,12 +2,13 @@
 
 # Support for directed, weighted edges
 # Vertices stored in an adjacency matrix
-# Edges stored in a list?
 
 class Graph():
-    def __init__(self, adj):
+    def __init__(self, adj, w=[]):
         self.adj = adj # Adjacency list
         self.d = [] # List of shortest-path distance estimates for each vertex `v` in `V`
+        self.p = [] # List of predecessors
+        self.w = w # List of weights for edges
 
     def print_graph(self):
         """
@@ -33,18 +34,41 @@ class Graph():
 
         return False
 
-    def initialize_d(self):
+    def init_ss(self, s): # "init_single_source"
         """
         Initialize distance estimates `d[u]` to +infinity for all `u`
         """
         self.d = [float("+inf") for u in self.adj]
+        self.d[s] = 0 # Source dist is initially 0
+        self.p = [-1 for u in self.adj] # All predecessors set to 1 intially (unused for BFS or DFS)
         return
+    
+    def relax(self, u, v, w):
+        """
+        "Relaxes" the distance estimate for edge (u, v)
+        if the old weight `w` is greater than the calculated
+        cost d[u] + w[(u, v)]
+        """
+        # We know u, but we need to traverse the list to get `v`
+        # Since vertex `v` is not neccessarily at position G.adj[u][v] in the adj. list of vertex `u`
+        for _v in G.adj[u]:
+            if G.adj[u][_v] == v: # Found location
+                v = _v # set index to be used for self.w[u][v]
+        
+        # If the old cost is worse than the new cost estimate
+        if self.d[v] > self.d[u] + self.w[u][v]:
+            self.d[v] = self.d[u] + self.w[u][v]
+            self.p[v] = u # Set a new best-predecessor
+        return
+
 
 # Unused atm
 class Vertex():
     def __init__(self, v, w):
         self.v = v # Vertex Key
         self.w = w # Weight
+        self.d = float("+inf") # Distance Estimate
+        self.p = -1 # Predecessor vertex key
 
 class Queue():
     def __init__(self):
