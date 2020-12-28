@@ -79,16 +79,7 @@ class Graph():
                 return _v # set index to be used for self.w[u][v]
         raise Exception(f"Error: Could not locate v = {v}'s index in adj[{u}]")
         return -1 
-
-
-# Unused atm
-class Vertex():
-    def __init__(self, v, w):
-        self.v = v # Vertex Key
-        self.w = w # Weight
-        self.d = float("+inf") # Distance Estimate
-        self.p = -1 # Predecessor vertex key
-
+    
 class Queue():
     def __init__(self):
         self.q = []
