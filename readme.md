@@ -98,6 +98,7 @@ Theta(# buckets * time per bucket)
 * Time: O(VE)
 
 ### Dijkstra's Algorithm (Single-Source Shortest Paths)
+* Run [dijkstra.py](./graphs/dijkstra.py) to see it in action
 * Maintains a set of 2 vertices:
 * S = vertice sfor which true shortest path weight has been determined
 * pq = priority queue = `V` - `s`
