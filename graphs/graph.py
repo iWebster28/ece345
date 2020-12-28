@@ -3,6 +3,8 @@
 # Support for directed, weighted edges
 # Vertices stored in an adjacency matrix
 
+EMPTY = "EMPTY" # No vertex present
+
 class Graph():
     def __init__(self, adj, w=[]):
         self.adj = adj # Adjacency list
@@ -11,17 +13,39 @@ class Graph():
         self.w = w # List of weights for edges
         # self.V = [v for v in range(0, len(G.adj))]
 
+        # DFS-Specific
+        self.colour = [] # Colour of vertices
+        self.dt = [] # Discovery Time for vertices
+        self.ft = [] # Finish Time for vertices
+        self.time = -1
+
     def print_graph(self):
         """
-        Prints graph as adjacency list
+        Prints graph as adjacency list.
+        params: [bfs, dfs, bellman-ford, dijkstra]
         """
         print("----Printing graph----")
 
         for u in range(0, len(self.adj)):
-            print(f"adj[{u}]: {self.adj[u]} \nd[{u}]: {self.d[u]}", end="\n")
-            if len(self.p) is not 0:
-                print(f"p[{u}]: {self.p[u]}\n--------")
-                
+            if u is not EMPTY:
+                print("----", end="")
+                self.print_val("adj", u, self.adj[u])
+                if len(self.d) is not 0:
+                    self.print_val("d", u, self.d[u])
+                if len(self.p) is not 0:
+                    self.print_val("p", u, self.p[u])
+                if len(self.colour) is not 0:
+                    self.print_val("colour", u, self.colour[u])
+                if len(self.dt) is not 0:
+                    self.print_val("dt", u, self.dt[u])
+                if len(self.ft) is not 0:
+                    self.print_val("ft", u, self.ft[u])
+        if self.time is not -1:
+            print("time: ", self.time)
+        return
+    
+    def print_val(self, prefix, u, value):
+        print(f"{prefix}[{u}]: {value}", end="\n")
         return
 
     def vertex_exist(self, s):
@@ -80,6 +104,19 @@ class Graph():
         raise Exception(f"Error: Could not locate v = {v}'s index in adj[{u}]")
         return -1 
     
+    def init_V(self):
+        """
+        Returns a working list of Vertices if desired.
+        """
+        # Initialize
+        V = [v for v in range(0, len(self.adj))]
+        # Check for empty Vertices and mark as EMPTY:
+        # This is important. In my current graph structure, there's no way to determine if a node is just isolated, or if it is not present at all.
+        for v in V:
+            if self.adj[v] == []: #i.e. there are NO listed vertices connected
+                V[v] = EMPTY # Then this is an empty node. Mark with something.
+        return V
+
 class Queue():
     def __init__(self):
         self.q = []
