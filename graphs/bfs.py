@@ -14,7 +14,7 @@ def main():
 
 def bfs(G, s):
     """
-    Breadth-First Search! For directed, unweighted graphs.
+    Breadth-First Search! For directed/undirected, unweighted graphs.
     """
     # Ensure s is a subset of G.V
     if not G.vertex_exist(s):

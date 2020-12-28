@@ -29,7 +29,7 @@ class Graph():
         Answers if vertex `s` exists in `V`
         """
         if s >= len(self.adj) or s < 0:
-            print("Error: Invalid source vertex `s`")
+            raise Exception("Error: Invalid source vertex `s`")
             return False
 
         # If source vertex exists, and has edges to other vertices
@@ -56,17 +56,17 @@ class Graph():
         """
         # We know u, but we need to traverse the list to get `v`
         # Since vertex `v` is not neccessarily at position G.adj[u][v] in the adj. list of vertex `u`
-        print(f"HEY: u = {u}, v = {v}, d[u] = {self.d[v]}, d[v] = {self.d[u]}")
-        print(self.adj[u])
+        # print(f"HEY: u = {u}, v = {v}, d[u] = {self.d[u]}, d[v] = {self.d[v]}")
+        # print(self.adj[u])
         v_idx_in_w = self.get_adj_idx(u, v)
 
         # If the old cost is worse than the new cost
-        print(f"{self.d[v]} > {self.d[u]} + {self.w[u][v_idx_in_w]} is {self.d[v] > self.d[u] + self.w[u][v_idx_in_w]}")
+        # print(f"{self.d[v]} > {self.d[u]} + {self.w[u][v_idx_in_w]} is {self.d[v] > self.d[u] + self.w[u][v_idx_in_w]}")
         if self.d[v] > self.d[u] + self.w[u][v_idx_in_w]:
-            print(f"UPDATE d[v]: {self.d[v]}")
+            # print(f"UPDATE d[v]: {self.d[v]}")
             self.d[v] = self.d[u] + self.w[u][v_idx_in_w]
             self.p[v] = u # Set a new best-predecessor
-        print(f"Final d[v]: {self.d[v]}")
+        # print(f"Final d[v]: {self.d[v]}")
         return
 
     def get_adj_idx(self, u, v):
@@ -74,10 +74,10 @@ class Graph():
         O(n) lookup in a linked list adj[u], at position adj[u][v_idx_in_w], where its value is `v`
         """
         for _v in range(0, len(self.adj[u])):
-            print(_v)
+            # print(_v)
             if self.adj[u][_v] == v: # Found location
                 return _v # set index to be used for self.w[u][v]
-        print(f"Error: Could not locate v = {v}'s index in adj[{u}]")
+        raise Exception(f"Error: Could not locate v = {v}'s index in adj[{u}]")
         return -1 
 
 
@@ -105,10 +105,3 @@ class Queue():
         Pop a node/vertice from the end of the queue, and return vertex.
         """
         return self.q.pop(-1)
-    
-    # def difference(V, s):
-    #     """
-    #     Finds the difference of 2 lists `V` and `s where 
-    #     # (`s` is really a single vertex assumed to be in list `V`)
-    #     """
-    #     return [v for v in V if v not in s]

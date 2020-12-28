@@ -7,9 +7,13 @@ import heapsort as hs
 import sort_comms as sc
 
 def main():
+    # Get source vertex `s` from argument 1
+    if len(sys.argv) != 2:
+        s = 4
+    else:
+        s = int(sys.argv[1])
     adj = gc.adj_c
     w = gc.weight_c
-    s = 4
     G = gr.Graph(adj, w)
 
     bellman_ford(G, s)

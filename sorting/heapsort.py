@@ -5,12 +5,11 @@ class Heap:
     def __init__(self, input_array):
         if (len(input_array) < 1):
             print("Invalid input array size.")
-        self.A = input_array
         
         self.start_idx = 1
-        self.cvt_one_idx(input_array) # Convert to 1-indexed array
+        self.A = self.cvt_one_idx(input_array) # Convert to 1-indexed array
         # self.A.append(input_array[0]) # O(1) - Append 1st item to end of list (we ignore index 0)
-        
+
         self.length = len(self.A) - 1
         self.heap_size = len(self.A) - 1 # Initially
         print('length:', self.length)
@@ -21,17 +20,17 @@ class Heap:
         Convert to 1-indexed array (shift all elements right)
         """
         self.start_idx = 1
-        self.A.insert(1, input_array[0]) # O(n)
-        return
+        input_array.insert(1, input_array[0]) # O(n)
+        return input_array
     
-    def cvt_zero_idx(self):
+    def cvt_zero_idx(self, input_array):
         """
         Convert to 0-indexed array (shift all elements left)
         """
         self.start_idx = 0
-        self.A[:] = self.A[1:] # A[0] gets removed; all other elements shifted left
+        input_array[:] = input_array[1:] # A[0] gets removed; all other elements shifted left
         self.length -= 1
-        return
+        return input_array
 
     # Return index corresponding to parent of node `i`
     def parent(self, i):
@@ -47,12 +46,23 @@ class Heap:
 
     def swap(self, i1, i2):
         """
-        Swaps 2 nodes in array A; indices i1 and i2.
+        Swaps 2 nodes in array `A`; indices i1 and i2.
         """
         # print("swapping", i1, "and", i2)
         temp = self.A[i1]
         self.A[i1] = self.A[i2]
         self.A[i2] = temp
+        return
+    
+    def swap_values(self, i1, i2):
+        """
+        Swaps 2 nodes in array `values`; indices i1 and i2.
+        """
+        # print("swapping", i1, "and", i2)
+        temp = self.values[i1]
+        self.values[i1] = self.values[i2]
+        self.values[i2] = temp
+        # self.print_heap_idx()
         return
 
     def max_heapify(self, i): # aka "extract max" or "bubble down"
@@ -125,7 +135,7 @@ class Heap:
         Deletes/Extracts the max OR min node in a heap.
         """
         if (self.heap_size < 1):
-            print("Error: heap_size too small.")
+            raise Exception("Error: heap_size too small.")
         
         root = self.A[1]
         self.swap(1, self.heap_size)
@@ -159,7 +169,7 @@ class Heap:
         Prints heap in spaced format.
         """
         if self.length < 0 or self.heap_size < 0:
-            print("Error: Heap length too small.")
+            raise Exception("Error: Heap length too small.")
             return
         print("Print heap: ", end="")
         for i in range(self.start_idx, self.length + 1):
@@ -217,4 +227,79 @@ class Heap:
             
             print("") # Newline after ever row `i` is finished printing all nodes
         print("")
+        return
+
+# For use in Dijkstra's Algorithm
+class PriorityQueue(Heap):
+    def __init__(self, values, keys):
+        # Better way: just pass in an array of vertice objects that have the vertex value and distance estimate keys.
+        if (len(keys) < 1):
+            print("Invalid input array size.")
+        
+        self.start_idx = 1
+        self.A = self.cvt_one_idx(keys) # Convert to 1-indexed array
+        self.values = self.cvt_one_idx(values)
+        # self.A.append(keys[0]) # O(1) - Append 1st item to end of list (we ignore index 0)
+
+        self.length = len(self.A) - 1
+        self.heap_size = len(self.A) - 1 # Initially
+        print('length:', self.length)
+        print('heap_size:', self.heap_size)
+
+    def min_heapify(self, i):
+        """
+        min_heapify compares a node `i` with its children, and swaps the smaller child with `i`.
+        Maintains the 'Heap Shape' property.
+        Time: O(logn)
+
+        This version of heapify is from CLRS.
+        """ 
+        l = self.left(i)
+        r = self.right(i)
+        if l <= self.heap_size and self.A[l] < self.A[i]:
+            smallest = l
+        else:
+            smallest = i
+        if r <= self.heap_size and self.A[r] < self.A[smallest]: # If `l` == `r`, then `r` is swapped with `i`
+            smallest = r
+        if smallest is not i:
+            self.swap(i, smallest) # Swap `d` keys - distance estimates
+            self.swap_values(i, smallest) # Ensure vertex `v` values are swapped as well (vertices)
+            self.min_heapify(smallest)
+        return
+    
+    def extract_root(self, hs_type): # "similar to heap_extract_max"
+        """
+        Deletes/Extracts the max OR min node in a heap.
+        """
+        if (self.heap_size < 1):
+            raise Exception("Error: heap_size too small.")
+        
+        # For keys/distance estimates (`d` for dijkstra)
+        root = self.A[1]
+        self.swap(1, self.heap_size)
+
+        # For values/vertices (`v` for dijkstra)
+        root_idx = self.values[1]
+        self.swap_values(1, self.heap_size)
+
+        self.heap_size = self.heap_size - 1
+
+        if hs_type == "max":
+            self.max_heapify(1)
+        else:
+            self.min_heapify(1)
+        return (root, root_idx) # Dijkstra: `root` is the distance estimate `d`; `root_idx` is the vertex `u`.
+    
+    def print_heap_idx(self):
+        """
+        Prints `self.values` (For Dijkstra: vertices `u`) in spaced format.
+        """
+        if self.length < 0 or self.heap_size < 0:
+            raise Exception("Error: Heap length too small.")
+            return
+        print("Print heap idx: ", end="")
+        for i in range(self.start_idx, self.length + 1):
+            print(self.values[i], end=" ")
+        print("\n")
         return

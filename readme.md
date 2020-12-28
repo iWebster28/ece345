@@ -1,7 +1,7 @@
 ## What is this?
-A little exploration into the depths of Algorithms and Data Structures. Based on the CLRS text.
+A little exploration into the depths of Algorithms and Data Structures to enhance my understanding. Based on the CLRS text.
 
-## Projects
+## Sorting Algorithms
 
 ### Heapsort
 * Run [heapsort_test.py](./sorting/heapsort_test.py) to see it in action.
@@ -46,6 +46,7 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
 * Time: Theta(n + k), where k is max value of input array
 
 ### Radix Sort
+* Run [rs_test.py](./sorting/rs_test.py) to see it in action
 * Stable sorting algorithm
 * Key idea: sort from LSB (least significant bit) to MSB (most " ") (or digit)
 ``` 
@@ -57,13 +58,48 @@ A little exploration into the depths of Algorithms and Data Structures. Based on
     d = # 'digits' for each number
     where d = b/r = # passes/bucket or passes/digit
 ```
-**EX1:** n = 100, b = 32, r = 8, k = 2^r = 2^3 = 8  
+**Time EX1:** n = 100, b = 32, r = 8, k = 2^r = 2^3 = 8  
 Theta(# buckets * time per bucket)  
 = Theta(d(n + k))   
 = Theta((b/r)(n + 2^r))  
 = Theta((32/8)(100 + 2^8)) = Theta(4(100 + 2^8))  
 
-**EX2:** (see arr_pos_trip in [sort_comms.py](./sorting/sort_comms.py)) n = 7, k = 10 (10 decimal numbers per 1 digit), d = 3 passes (max number in array A has 3 digits)  
+**Time EX2:** (see arr_pos_trip in [sort_comms.py](./sorting/sort_comms.py)) n = 7, k = 10 (10 decimal numbers per 1 digit), d = 3 passes (max number in array A has 3 digits)  
 Theta(# buckets * time per bucket)  
 = Theta(d(n + k))  
 = Theta(3(7 + 10))  
+
+
+## Graph Algorithms
+* For graphs G = (V, E)
+* V = Vertices, E = Edges
+* Graphs represented by **adjacency list** where:
+* V = {u | u in [0, len(G.adj))}
+* E = {(u, v) | u in [0, len(G.adj) and v in G.adj[u]}
+* See [graph.py](./graphs/graph.py) for more details on graph structure.
+* Weights, Predecessors, Distance Estimates, and Adjacency lists are stored separately. V and E may be interpreted from the Adjacency list. 
+
+### Breadth-First Search (BFS)
+* Run [bfs.py](./graphs/bfs.py) to see it in action
+* For directed or undirected, unweighted graphs.
+* Finds the shortest paths from source vertex `s` to every other vertex
+* Uses a **queue** to maintain a "wavefront" of encountered vertices
+* The "neighbours" of each encountered vertex is explored
+* The predecessor vertex for each vertex is stored in the `p` array
+* Paths can be printed by printing predecessors recursively (not implemented)
+* Time: O(V + E)
+* Note: BFS may not reach all vertices.
+
+### Bellman-Ford (Single-Source Shortest Paths)
+* Run [bellman_ford.py](./graphs/bellman-ford.py) to see it in action
+* Supports negative-weight edges, unlike Dijkstra.
+* Returns true when no negative weight cycles are reachable from source vertex `s`. Returns false otherwise.
+* Every edge is "relaxed" >= 1 time
+* Time: O(VE)
+
+### Dijkstra's Algorithm (Single-Source Shortest Paths)
+* Maintains a set of 2 vertices:
+* S = vertice sfor which true shortest path weight has been determined
+* pq = priority queue = `V` - `s`
+* Time: O(ElogV)
+* Note: Cannot use with graphs containing negative-weight edges
