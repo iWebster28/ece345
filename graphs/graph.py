@@ -9,15 +9,19 @@ class Graph():
         self.d = [] # List of shortest-path distance estimates for each vertex `v` in `V`
         self.p = [] # List of predecessors
         self.w = w # List of weights for edges
+        # self.V = [v for v in range(0, len(G.adj))]
 
     def print_graph(self):
         """
         Prints graph as adjacency list
         """
-        print("Printing graph:")
+        print("----Printing graph----")
 
         for u in range(0, len(self.adj)):
             print(f"adj[{u}]: {self.adj[u]} \nd[{u}]: {self.d[u]}", end="\n")
+            if len(self.p) is not 0:
+                print(f"p[{u}]: {self.p[u]}\n--------")
+                
         return
 
     def vertex_exist(self, s):
@@ -47,21 +51,34 @@ class Graph():
         """
         "Relaxes" the distance estimate for edge (u, v)
         if the old weight `w` is greater than the calculated
-        cost d[u] + w[(u, v)]
+        cost d[u] + w[(u, v)].
+        Where `u` is a potentially "better (lower cost)" predecessor to `v`
         """
         # We know u, but we need to traverse the list to get `v`
         # Since vertex `v` is not neccessarily at position G.adj[u][v] in the adj. list of vertex `u`
-        # print(self.adj[u])
-        for _v in range(0, len(self.adj[u])):
-            # print(_v)
-            if self.adj[u][_v] == v: # Found location
-                v_idx_in_w = _v # set index to be used for self.w[u][v]
-        
+        print(f"HEY: u = {u}, v = {v}, d[u] = {self.d[v]}, d[v] = {self.d[u]}")
+        print(self.adj[u])
+        v_idx_in_w = self.get_adj_idx(u, v)
+
         # If the old cost is worse than the new cost
+        print(f"{self.d[v]} > {self.d[u]} + {self.w[u][v_idx_in_w]} is {self.d[v] > self.d[u] + self.w[u][v_idx_in_w]}")
         if self.d[v] > self.d[u] + self.w[u][v_idx_in_w]:
+            print(f"UPDATE d[v]: {self.d[v]}")
             self.d[v] = self.d[u] + self.w[u][v_idx_in_w]
             self.p[v] = u # Set a new best-predecessor
+        print(f"Final d[v]: {self.d[v]}")
         return
+
+    def get_adj_idx(self, u, v):
+        """
+        O(n) lookup in a linked list adj[u], at position adj[u][v_idx_in_w], where its value is `v`
+        """
+        for _v in range(0, len(self.adj[u])):
+            print(_v)
+            if self.adj[u][_v] == v: # Found location
+                return _v # set index to be used for self.w[u][v]
+        print(f"Error: Could not locate v = {v}'s index in adj[{u}]")
+        return -1 
 
 
 # Unused atm
